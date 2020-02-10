@@ -1,93 +1,4 @@
-// select HTML tags and store references to these elements in variables
-var quizContainer = document.getElementById('quiz');
-var resultsContainer = document.getElementById('results');
-var submitButton = document.getElementById('submit');
-
-
-// creating functions that will create quiz and show results
-function generateQuiz(questions, quizContainer, resultsContainer, submitButton) {
-
-    function showQuestions(questions, quizContainer) {
-        
-        // store the output and answer choices
-        var output = [];
-        var answers;
-
-        // for each question
-        for(var i=0; i<questions.length; i++) {
-            
-            // reset the list of answers
-            answers = [];
-
-            // for each available answer to this question...
-            for(letter in questions [i].answers) {
-
-                // ...add an html radio button
-                answers.push(
-                    '<label>'
-                        + '<input type="radio" name="question'+ i +' "value=" '+letter+'">'
-                        + letter + ': '
-                        + questions[i].answers[letter]
-                    + '</label>'
-                );
-            }
-
-            // add this question and its answers to the output
-            output.push(
-                '<div class="question">' + questions[i].question + '</div>'
-                + '<div class="answers">' + answers.join('') + '</div>'
-            );
-
-            // finally combine output list into one string of htm and put it on the page
-            quizContainer.innerHTML = output.join('');
-        }
-
-    };
-   
-    function showResults(questions, quizContainer, resultsContainer) {
-
-        // gather answer containers from our quiz
-        var answerContainers = quizContainer.querySelectorAll('.answers');
-
-        // keep track of user's answers
-        var userAnswer = '';
-        var numCorrect = 0;
-
-        // for each question...
-        for(var i=0; i<questions.length; i++) {
-
-            // find selected answer
-            userAnswer = (answerContainers[i].querySelector('input[name=question'+ i +']:checked')||{}).value;
-
-            // if answer is correct
-            if(userAnswer === questions[i].correctAnswer) {
-                // add to the number of correct answers
-                numCorrect++;
-
-                // color the answers green
-                answerContainers[i].style.color = 'lightgreen';
-            }
-            // if answer is wrong or blank
-            else{
-                // color the answers red
-                answerContainers[i].style.color = 'red';
-            }
-        }
-
-        // show number of correct answers out of total
-        resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
-    };
-
-    // show the questions
-    showQuestions(questions, quizContainer);
-
-    // when submit button is clicked, show results
-    submitButton.onclick = function() {
-        showResults(questions, quizContainer, resultsContainer);
-    }
-};
-
-// countdown timer
+// Countdown timer
 function MyTimer(callback, val) {
     val = val || 60; 
     var timer=setInterval(function() { 
@@ -96,71 +7,105 @@ function MyTimer(callback, val) {
             clearInterval(timer); 
         } 
     }, 1000);
-}
-new MyTimer(function(val) {
+  }
+  new MyTimer(function(val) {
     var timerMsg = "00:" + (val >= 10 ? val : "0" + val);
     document.getElementById("timer").textContent = timerMsg; 
-});
-
-
-
-// use object literals to respresent indiv questions
-// use array to hold all questions that make up quiz
-var myQuestions = [
-	{
-		question: "Commonly used data types DO NOT include:",
-		answers: {
-			a: 'strings',
-			b: 'alerts',
-            c: 'booleans',
-            d: 'numbers',
-		},
-		correctAnswer: 'b'
-    },
+  });
+  
+  
+  // Position of user in quiz
+  var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
+  
+  // Questions array
+  var questions = [
+    ["Commonly used data types DO NOT include:", 
+      "A: strings", 
+      "B: alerts", 
+      "C: booleans", 
+      "D: numbers", 
+      "B"],
+  
+    ["The condition in an if / else statement is enclosed within ____.", 
+      "A: parentheses", 
+      "B: curly brackets", 
+      "C: square brackets", 
+      "D: quotes", 
+      "A"],
+  
+    ["Arrays in JavaScript can be used to store ____.", 
+      "A: booleans", 
+      "B: other arrays", 
+      "C: numbers and strings", 
+      "D: all of the above", 
+      "D"],
+  
+      ["A very useful tool used during development and debugging for printing content to the debugger is:", 
+      "A: for loops", 
+      "B: console.log", 
+      "C: JavaScript", 
+      "D: terminal / bash", 
+      "B"],
+  
+    ["String values must be enclosed within ____ when being assigned to variables.", 
+      "A: curly brackets", 
+      "B: commas", 
+      "C: quotes", 
+      "D: parentheses", 
+      "C"]
+    ];
+  
+  // This get function is short for the getElementById function	
+  function get(x){
+    return document.getElementById(x);
+  }
+  
+  function renderQuestion(){
+    test = get("test");
+    if(pos >= questions.length){
+      test.innerHTML = "<h2>You got " + correct + " of " + questions.length + " questions correct</h2>";
+      get("test_status").innerHTML = "Test completed";
+      // resets the variable to allow users to restart the test
+        pos = 0;
+        correct = 0;
+      // stops rest of renderQuestion function running when test is completed
+      return false;
+    }
     
-	{
-		question: "The condition in an if / else statement is enclosed within ____.",
-		answers: {
-			a: 'parentheses',
-			b: 'curly brackets',
-            c: 'square brackets',
-            d: 'quotes',
-		},
-		correctAnswer: 'a'
-    },
-
-    {
-		question: "Arrays in JavaScript can be used to store ____.",
-		answers: {
-			a: 'booleans',
-			b: 'other arrays',
-            c: 'numbers and strings',
-            d: 'all of the above',
-		},
-		correctAnswer: 'd'
-    },
-
-    {
-		question: "String values must be enclosed within ____ when being assigned to variables.",
-		answers: {
-			a: 'curly brackets',
-			b: 'commas',
-            c: 'parentheses',
-            d: 'quotes',
-		},
-		correctAnswer: 'd'
-    },
-
-    {
-		question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-		answers: {
-			a: 'for loops',
-			b: 'JavaScript',
-            c: 'console.log',
-            d: 'terminal / bash',
-		},
-		correctAnswer: 'c'
-    },
-];
-
-generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
+    get("test_status").innerHTML = "Question "+(pos+1)+" of "+questions.length;
+    question = questions[pos][0];
+    chA = questions[pos][1];
+    chB = questions[pos][2];
+    chC = questions[pos][3];
+    chD = questions[pos][4];
+    test.innerHTML = "<h3>"+question+"</h3>";
+    
+    // the += appends to the data started on the line above
+    test.innerHTML += "<input type='radio' name='choices' value='A'> "+chA+"<br>";
+    test.innerHTML += "<input type='radio' name='choices' value='B'> "+chB+"<br>";
+    test.innerHTML += "<input type='radio' name='choices' value='C'> "+chC+"<br>";
+    test.innerHTML += "<input type='radio' name='choices' value='D'> "+chD+"<br><br>";
+    test.innerHTML += "<button onclick='checkAnswer()'>Submit Answer</button>";
+  }
+  
+  function checkAnswer(){
+    // use getElementsByName because we have an array which it will loop through
+    choices = document.getElementsByName("choices");
+    for(var i=0; i<choices.length; i++){
+      if(choices[i].checked){
+        choice = choices[i].value;
+      }
+    }
+  
+    // checks if answer matches the correct choice
+    if(choice == questions[pos][5]){
+      //each time there is a correct answer this value increases
+      correct++;
+    }
+  
+    // changes position of which character user is on
+    pos++;
+    // then the renderQuestion function runs again to go to next question
+    renderQuestion();
+  }
+  window.addEventListener("load", renderQuestion, false);

@@ -1,35 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
-    <meta charset="UTF-8">
-    <title>Code Quiz</title>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<title>Code Quiz</title>
 </head>
 
 <body>
     <header>Code Quiz</header>
-    
-    <div class="container">
-        <div class="quiz-container">
-            <div id="quiz"></div>
-        </div>
+
+    <div id="timer">Timer</div>
         
-        <div class="button-container">
-            <button id="submit">Submit</button>
-            <button id="previous">Previous Question</button>
-            <button id="next">Next Question</button>
-            <!-- <button id="submit">Submit Quiz</button> -->
-            <div id="timer">Timer</div>
-        </div>       
-
-        <div id="results"></div>
-                 
+    <div class="container">        
+        <h2 id="test_status"></h2>    
+        <div id="test"></div>
     </div>
-    
+   
 
-    <script src="script.js"> </script>
+    <div id="footer">
+        Copyright &copy; 2019 Kauri Nanda
+    </div>
 
+    <script src="script.js"></script>
 </body>
-
 </html>
